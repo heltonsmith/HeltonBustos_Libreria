@@ -10,7 +10,7 @@ def call(def scannerHome, boolean abortPipeline = false, String gitBranch = '') 
                         if (abortPipeline) {
                             error "Quality Gate failed: ${qualityGate.status}"
                             error "Se abortará el pipeline debido a la configuración."
-                        } else if (gitBranch == 'master' || gitBranch.startsWith('hotfix')) {
+                        } else if (gitBranch == 'main' || gitBranch.startsWith('hotfix')) {
                             error "Quality Gate failed: ${qualityGate.status}"
                             error "Se abortará el pipeline según la rama: ${gitBranch}"
                         }

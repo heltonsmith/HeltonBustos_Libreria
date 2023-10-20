@@ -1,4 +1,4 @@
-def call(def scannerHome, boolean abortPipeline = false) {
+def call(def scannerHome, boolean abortPipeline = false, String gitBranch = '') {
     try {
         withSonarQubeEnv(credentialsId: 'sonar-token') {
             sh "${scannerHome}/bin/sonar-scanner"
@@ -6,9 +6,13 @@ def call(def scannerHome, boolean abortPipeline = false) {
                 script {
                     def qualityGate = waitForQualityGate()
                     if (qualityGate.status != 'OK') {
-                        error "Quality Gate failed: ${qualityGate.status}"
+                        // Puedes usar la variable gitBranch aquí según tus condiciones
                         if (abortPipeline) {
-                            error "QualityGate de SonarQube falló, se abortará el pipeline."
+                            error "Quality Gate failed: ${qualityGate.status}"
+                            error "Se abortará el pipeline debido a la configuración."
+                        } else if (gitBranch == 'master' || gitBranch.startsWith('hotfix')) {
+                            error "Quality Gate failed: ${qualityGate.status}"
+                            error "Se abortará el pipeline según la rama: ${gitBranch}"
                         }
                     }
                 }

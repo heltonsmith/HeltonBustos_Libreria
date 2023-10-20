@@ -1,4 +1,4 @@
-def call(boolean abortPipeline = false) {
+def call(def scannerHome, boolean abortPipeline = false) {
     try {
         withSonarQubeEnv(credentialsId: 'sonar-token') {
             sh "${scannerHome}/bin/sonar-scanner"
